@@ -7,26 +7,43 @@ namespace TesteCsharp.services
         LeitorService leitor = new LeitorService();
         public List<int> andarMenosUtilizado()
         {
-            
-            List<int> numeros = new List<int>();
-            leitor.findAll().ForEach(x =>
+            List<int> andares = new List<int>();
+            var andar = from el in leitor.findAll() group el by el.andar into SelectAndar select SelectAndar;
+            var adr = andar.OrderBy(x=>x.Count()).ToList(); 
+            foreach (var item in adr)
             {
-                numeros.Add(x.andar);
-            });
-            List<int> andares = numeros.GroupBy(p => p).Where(g => g.Count() == 1)
-            .Select(c => c.Key).ToList();
+                Console.WriteLine($"andar = {item.Key} | visitas = {item.Count()}");
+                andares.Add(item.Key);
+            }
             return andares;
-
         }
 
         public List<char> elevadorMaisFrequentado()
         {
-            throw new NotImplementedException();
+            List<char> keyElevador = new List<char>();
+            var elevador = from el in leitor.findAll() group el by el.elevador into SelectElevadores select SelectElevadores;
+            Dictionary<char, int> items = new Dictionary<char, int>();
+            var elev = elevador.OrderByDescending(x=>x.Count()).ToList();
+            foreach (var item in elev)
+            {
+                Console.WriteLine($"elevador = {item.Key}");
+                keyElevador.Add(item.Key);
+            }
+            return keyElevador;
         }
 
         public List<char> elevadorMenosFrequentado()
         {
-            throw new NotImplementedException();
+            List<char> keyElevador = new List<char>();
+            var elevador = from el in leitor.findAll() group el by el.elevador into SelectElevadores select SelectElevadores;
+            var elev = elevador.OrderBy(x=>x.Count()).ToList();
+            foreach (var item in elev)
+            {
+                Console.WriteLine($"elevador = {item.Key}");
+                keyElevador.Add(item.Key);
+            }
+
+            return keyElevador;            
         }
 
         public float percentualDeUsoElevadorA()
@@ -61,7 +78,17 @@ namespace TesteCsharp.services
 
         public List<char> periodoMaiorUtilizacaoConjuntoElevadores()
         {
-            throw new NotImplementedException();
+            List<char> lisTurno = new List<char>();
+            var turno = from p in leitor.findAll() group p by p.turno into SelectTurno select SelectTurno;
+
+            var pe = turno.OrderByDescending(x=>x.Count()).ToList();
+            foreach (var item in pe)
+            {
+               Console.WriteLine($"periodo = {item.Key}");
+               lisTurno.Add(item.Key);
+
+            }
+            return lisTurno;            
         }
 
         public List<char> periodoMenorFluxoElevadorMenosFrequentado()
