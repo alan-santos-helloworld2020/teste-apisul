@@ -7,8 +7,15 @@ namespace TesteCsharp.services
         LeitorService leitor = new LeitorService();
         public List<int> andarMenosUtilizado()
         {
-            throw new NotImplementedException();
- 
+            
+            List<int> numeros = new List<int>();
+            leitor.findAll().ForEach(x =>
+            {
+                numeros.Add(x.andar);
+            });
+            List<int> andares = numeros.GroupBy(p => p).Where(g => g.Count() == 1)
+            .Select(c => c.Key).ToList();
+            return andares;
 
         }
 

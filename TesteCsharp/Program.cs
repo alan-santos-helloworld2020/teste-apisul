@@ -8,10 +8,16 @@ namespace TesteCsharp
     {
         public static void Main(string[] args)
         {
- 
-         
+
+           ElevadorService servico = new ElevadorService();
+
+           servico.andarMenosUtilizado().ForEach(x=>{
+              Console.WriteLine(x);
+           });
 
 
         }
+
+
     }
 }
